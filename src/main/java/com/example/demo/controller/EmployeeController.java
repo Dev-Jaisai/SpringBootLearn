@@ -3,8 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.entity.Employee;
 import com.example.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/apiController")//address define
@@ -14,12 +17,18 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @PostMapping("/save")
-    public String saveEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<String> saveEmployee(@RequestBody Employee employee) {
 
         employeeService.saveEmployee(employee);
 
-        return "Successfully createed Employee Data";
+        return new ResponseEntity<>("Data has been save", HttpStatus.CREATED);
     }
 
+
+    @GetMapping("/get")
+    public ResponseEntity<List<Employee>> getEmployeeDat() {
+        List<Employee> allemployeeData = employeeService.getAllemployeeData();
+        return new ResponseEntity<>(allemployeeData, HttpStatus.OK);
+    }
 
 }
